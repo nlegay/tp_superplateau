@@ -1,59 +1,56 @@
 import java.util.Random;
 
 public class Course {
+	SuperPlateau plateau;
+	Random r = new Random();
+	int taille;
+	int[][] positions;
+	int[] x = {0,0};
+	int[] y = {0,1};
 	
-	public static void main(String[] args) {
-		Random r = new Random();
-		int choix;
-		int[] x = {0,0};
-		int[] y = {0,1};
-		String[] gifs={"images/un.gif", "images/deux.gif", "images/trois.gif", "images/quatre.gif"};
-		int taille = 10;
-		int[][] positions = new int[taille][taille];
-		SuperPlateau plateau = new SuperPlateau(gifs, taille);
-		
+	Course(String[] gifs, int taille){
+		plateau = new SuperPlateau(gifs, taille);
+		positions = new int[taille][taille];
+		this.taille = taille;
+		// on initialise le tableau position avec que des 0
 		for (int i=0;i<taille;i++)
 			for (int j=0;j<taille;j++)
 			positions[i][j]=0;
+		// on place les smileys
 		positions[x[0]][y[0]] = 1;
 		positions[x[1]][y[1]] = 2;
-		plateau.setJeu(positions);
-		plateau.affichage();
+	}
+	
+	void deplacerAlea(int joueur){
+		int choix = r.nextInt(3);
+		if(choix==0){
+			if(plateau.deplacer(x[joueur], y[joueur], x[joueur]+1, y[joueur])){
+				x[joueur]++;
+			}
+		}else if(choix==1){
+			if(plateau.deplacer(x[joueur], y[joueur], x[joueur], y[joueur]+1)){
+				y[0]++;
+			}
+		}else if(choix==2){
+			if(plateau.deplacer(x[joueur], y[joueur], x[joueur]+1, y[joueur]+1)){
+				x[joueur]++;
+				y[joueur]++;
+			}
+		}
+	}
+	public static void main(String[] args) {
+		String[] gifs={"images/un.gif", "images/deux.gif", "images/trois.gif", "images/quatre.gif"};
+		Course course = new Course(gifs, 10);
+
+		course.plateau.setJeu(course.positions);
+		course.plateau.affichage();
 		
-		while(positions[taille-1][taille-1] == 0){
+		while(course.positions[course.taille-1][course.taille-1] == 0){
 			try{Thread.sleep(500);}catch(Exception ie){}
-			choix = r.nextInt(3);
-			if(choix==0){
-				if(plateau.deplacer(x[0], y[0], x[0]+1, y[0])){
-					x[0]++;
-				}
-			}else if(choix==1){
-				if(plateau.deplacer(x[0], y[0], x[0], y[0]+1)){
-					y[0]++;
-				}
-			}else if(choix==2){
-				if(plateau.deplacer(x[0], y[0], x[0]+1, y[0]+1)){
-					x[0]++;
-					y[0]++;
-				}
-			}
+			course.deplacerAlea(0);
 			try{Thread.sleep(500);}catch(Exception ie){}
-			choix = r.nextInt(3);
-			if(choix==0){
-				if(plateau.deplacer(x[1], y[1], x[1]+1, y[1])){
-					x[1]++;
-				}
-			}else if(choix==1){
-				if(plateau.deplacer(x[1], y[1], x[1], y[1]+1)){
-					y[1]++;
-				}
-			}else if(choix==2){
-				if(plateau.deplacer(x[1], y[1], x[1]+1, y[1]+1)){
-					x[1]++;
-					y[1]++;
-				}
-			}
-			plateau.affichage();
+			course.deplacerAlea(1);
+			course.plateau.affichage();
 		}
 		System.out.println("Bravo!");
 	}
