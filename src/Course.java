@@ -29,7 +29,7 @@ public class Course {
 			}
 		}else if(choix==1){
 			if(plateau.deplacer(x[joueur], y[joueur], x[joueur], y[joueur]+1)){
-				y[0]++;
+				y[joueur]++;
 			}
 		}else if(choix==2){
 			if(plateau.deplacer(x[joueur], y[joueur], x[joueur]+1, y[joueur]+1)){
@@ -48,9 +48,11 @@ public class Course {
 		while(course.positions[course.taille-1][course.taille-1] == 0){
 			try{Thread.sleep(500);}catch(Exception ie){}
 			course.deplacerAlea(0);
+			course.plateau.affichage();
 			try{Thread.sleep(500);}catch(Exception ie){}
 			course.deplacerAlea(1);
 			course.plateau.affichage();
+			System.out.println("yo");
 		}
 		System.out.println("Bravo!");
 	}
